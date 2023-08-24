@@ -59,113 +59,26 @@ onMounted(() => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="item in reportData" :key="item">
                   <td class="py-3">
-                    <span class="text-xs">Report ID 123</span>
+                    <span class="text-xs">{{item.bookingId}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">BMW 1234</span>
+                    <span class="text-xs">{{item.vehicleNumber}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">2023-01-23</span>
+                    <span class="text-xs">{{item.date}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">8:00 AM</span>
+                    <span class="text-xs">{{item.startTime}}</span>
                   </td>
 
                   <td class="text-center py-3">
-                    <span class="text-xs">10:00 AM</span>
+                    <span class="text-xs">{{item.endTime}}</span>
                   </td>
 
                   <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark">Download</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3">
-                    <span class="text-xs">Report ID 123</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">BMW 1234</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">2023-01-23</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">8:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="text-xs">10:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark">Download</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3">
-                    <span class="text-xs">Report ID 123</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">BMW 1234</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">2023-01-23</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">8:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="text-xs">10:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark">Download</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3">
-                    <span class="text-xs">Report ID 123</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">BMW 1234</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">2023-01-23</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">8:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="text-xs">10:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark">Download</a>
-                  </td>
-                </tr><tr>
-                  <td class="py-3">
-                    <span class="text-xs">Report ID 123</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">BMW 1234</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">2023-01-23</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">8:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="text-xs">10:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark">Download</a>
+                    <a :href=item.url class="text-dark">Download</a>
                   </td>
                 </tr>
 
@@ -178,3 +91,55 @@ onMounted(() => {
     </section>
   </div>
 </template>
+<script>
+import VehicleService from "@/service/VehicleService";
+import Vehicle from "@/model/Vehicle";
+import ReportService from "@/service/ReportService";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      formData: new Vehicle(),
+      loading: false,
+      submitted: false,
+      errorMessage: "",
+      message: "",
+      reportData: [],
+      selectedId: 0
+    };
+  },
+  mounted() {
+    this.loadReports()
+  },
+  methods: {
+    loadReports() {
+      ReportService.getMyReports(localStorage.getItem("user-id")).then((response) => {
+        response.data.forEach((element, index) => {
+          const payload = {
+            bookingId: element.booking.id,
+            url: "http://localhost:8083/wl/v1/api/file/download_document/"+element.url,
+            date: element.booking.date,
+            startTime: element.booking.startTime,
+            endTime: element.booking.endTime,
+            vehicleNumber: element.booking.vehicle.vehicleNumber
+          }
+          this.reportData.push(payload)
+          console.log(this.reportData);
+        })
+      }).catch((err) => {
+        if (err?.response?.status === 409) {
+          this.errorMessage = "Invalid Details!";
+        } else if (err?.response?.status === 403) {
+          this.errorMessage = "Invalid Details!";
+        } else {
+          this.errorMessage = "Unexpected Error occurred.!!";
+        }
+      }).then(() => {
+        this.loading = false;
+      });
+
+    },
+  }
+}
+</script>

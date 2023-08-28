@@ -22,6 +22,12 @@ class BookingService {
     return handleResponseWithLoginCheck(req);
   }
 
+  getAllBookings() {
+    const url = API_URL_MAIN + "/all";
+    const req = axios.get(url, { headers: authHeader() });
+    return handleResponseWithLoginCheck(req);
+  }
+
   deleteBookings(id) {
     const url = API_URL_MAIN ;
     const req = axios.delete(url, { headers: authHeader(),params:{"bookingId":id} });

@@ -43,23 +43,40 @@ onMounted(() => {
                 </div>
               </div>
               <div class="card-body">
-                <form role="form" class="text-start">
-                  <MaterialInput
-                    id="UserName"
-                    class="input-group-outline my-3"
-                    :label="{ text: 'Email', class: 'form-label' }"
-                    type="text"
-                  />
-                  <MaterialInput
-                    id="email"
-                    class="input-group-outline my-3"
-                    :label="{ text: 'Password', class: 'form-label' }"
-                    type="text"
-                  />
+                <form role="form" class="text-start" @submit.prevent="handleLogin">
+                  <div class=" text-white form-group">
+                    <label for="AdminEmail">Email</label>
+                    <input
+                      v-model="formData.email"
+                      type="email"
+                      id="AdminEmail"
+                      class="form-control"
+                      name="AdminEmail"
+                      placeholder="Email"
+                      required>
+                    <div class="text-white invalid-feedback">
+                      Email is required.
+                    </div>
+                  </div>
+                  <div class=" text-white form-group">
+                    <label for="AdminPassword">Password</label>
+                    <input
+                      v-model="formData.password"
+                      type="password"
+                      id="AdminPassword"
+                      class="form-control"
+                      name="AdminPassword"
+                      placeholder="Password"
+                      required>
+                    <div class="text-white invalid-feedback">
+                      Password is required.
+                    </div>
+                  </div>
 
                   <div class="text-center">
-                    <router-link to="/pages/landing-pages/adminlanding">
                       <MaterialButton
+                        @click="submitted = true"
+                        :disabled="loading"
                         class="my-4 mb-2"
                         variant="gradient"
                         color="success"
@@ -67,21 +84,16 @@ onMounted(() => {
 
                       >Sign In</MaterialButton
                       >
-                    </router-link>
                   </div>
-                  <p class="mt-4 text-sm text-center">
-                    Already have an account?
-                    <a
-                      href="/"
-                      class="text-success text-gradient font-weight-bold"
-                    >Sign In</a
-                    >
-                  </p>
+
                 </form>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div v-if="errorMessage" class="alert alert-danger mt-2">
+        {{ errorMessage }}
       </div>
       <footer class="footer position-absolute bottom-2 py-2 w-100">
         <div class="container">
@@ -145,3 +157,52 @@ onMounted(() => {
     </div>
   </Header>
 </template>
+<script>
+import AuthenticationService from "@/service/AuthenticationService";
+import User from "@/model/User";
+import router from "@/router";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      formData: new User(),
+      loading: false,
+      submitted: false,
+      errorMessage: ""
+    };
+  },
+  methods:{
+
+    handleLogin(){
+      if (!this.formData.email || !this.formData.password) {
+        return;
+      }
+
+      this.loading = true;
+
+      AuthenticationService.signIn(this.formData).then((response) => {
+        console.log(response)
+        if(response.data.role=='ADMIN') {
+          localStorage.setItem("user-id", response.data.id)
+          localStorage.setItem("user-token", response.data.token)
+          router.push("/pages/landing-pages/adminlanding");
+        }
+      }).catch((err) => {
+        console.log(err);
+        if (err?.response?.status === 409) {
+          this.errorMessage = "Email is not valid!";
+        } else if(err?.response?.status === 403){
+          this.errorMessage = "Invalid Email or Password!";
+        }else {
+          this.errorMessage = "Unexpected Error occurred.!!";
+        }
+      }).then(() => {
+        this.loading = false;
+      });
+    }
+  },
+
+
+};
+</script>

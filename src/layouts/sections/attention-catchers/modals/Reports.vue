@@ -92,7 +92,6 @@ onMounted(() => {
   </div>
 </template>
 <script>
-import VehicleService from "@/service/VehicleService";
 import Vehicle from "@/model/Vehicle";
 import ReportService from "@/service/ReportService";
 

@@ -23,8 +23,7 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
               <DefaultCounterCard
                 color="success"
                 title="Customer Satisfactions"
-                description="Mix the sections, change the colors and unleash your
-                  creativity"
+                description="Customer satisfaction is our top priority, and we strive to exceed expectations with every interaction"
                 :count="150"
                 suffix="+"
                 :duration="3000"
@@ -35,8 +34,7 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
               <DefaultCounterCard
                 color="success"
                 title="Service center"
-                description="Save 3-4 weeks of work when you use our pre-made pages for
-                  your website"
+                description="One and only best vehicle wash center"
                 :count="1"
                 :duration="3000"
               />

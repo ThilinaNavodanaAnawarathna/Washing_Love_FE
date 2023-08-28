@@ -34,7 +34,7 @@ onMounted(() => {
                     <h6 class="mb-0">User Id</h6>
                   </th>
                   <th class="text-center">
-                    <h6 class="font-weight-bold">User Name</h6>
+                    <h6 class="font-weight-bold">Email</h6>
                   </th>
                   <th class="text-center">
                     <h6 class="font-weight-bold">First Name</h6>
@@ -43,7 +43,7 @@ onMounted(() => {
                     <h6 class="font-weight-bold">Last Name</h6>
                   </th>
                   <th class="text-center">
-                    <h6 class="font-weight-bold">Lock</h6>
+                    <h6 class="font-weight-bold">Role</h6>
                   </th>
                   <th class="text-center">
                     <h6 class="font-weight-bold">Action</h6>
@@ -51,66 +51,22 @@ onMounted(() => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="item in userData" :key="item">
                   <td class="py-3">
-                    <span class="text-xs">1</span>
+                    <span class="text-xs">{{item.id}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">Thilina@mail.com</span>
+                    <span class="text-xs">{{item.email}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">Thilina</span>
+                    <span class="text-xs">{{item.firstName}}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">Anawarathne</span>
+                    <span class="text-xs">{{item.lastName}}</span>
                   </td>
 
                   <td class="text-center py-3">
-                    <span class="cursor-pointer text-xs ql-color-green">Lock</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark text-danger">Delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3">
-                    <span class="text-xs">1</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Thilina@mail.com</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Thilina</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Anawarathne</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="cursor-pointer text-xs ql-color-green">Lock</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark text-danger">Delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3">
-                    <span class="text-xs">1</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Thilina@mail.com</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Thilina</span>
-                  </td>
-                  <td class="text-center py-3">
-                    <span class="text-xs">Anawarathne</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="cursor-pointer text-xs ql-color-green">Lock</span>
+                    <span class="cursor-pointer text-xs ql-color-green">{{item.role}}</span>
                   </td>
 
                   <td class="text-center py-3">
@@ -126,3 +82,52 @@ onMounted(() => {
     </section>
   </div>
 </template>
+<script>
+import UserService from "@/service/UserService";
+import User from "@/model/User";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      formData: new User(),
+      loading: false,
+      submitted: false,
+      errorMessage: "",
+      message: "",
+      userData: [],
+      selectedId: 0
+    };
+  },
+  mounted() {
+    this.loadUsers()
+  },
+  methods: {
+    loadUsers() {
+      UserService.getAllUsers().then((response) => {
+        response.data.forEach((element, index) => {
+          const payload = {
+            id: element.id,
+            firstName: element.firstName,
+            lastName: element.lastName,
+            email: element.email,
+            role: element.role
+          }
+          this.userData.push(payload)
+        })
+      }).catch((err) => {
+        if (err?.response?.status === 409) {
+          this.errorMessage = "Invalid Details!";
+        } else if (err?.response?.status === 403) {
+          this.errorMessage = "Invalid Details!";
+        } else {
+          this.errorMessage = "Unexpected Error occurred.!!";
+        }
+      }).then(() => {
+        this.loading = false;
+      });
+
+    }
+  }
+}
+</script>

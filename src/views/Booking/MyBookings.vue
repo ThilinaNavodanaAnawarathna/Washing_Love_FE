@@ -140,7 +140,7 @@ onMounted(() => {
               >
             </div>
           </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. quod?</p>
+          <p>Update Details Valid</p>
         </div>
         <div class="modal-footer justify-content-between">
           <MaterialButton
@@ -161,7 +161,7 @@ onMounted(() => {
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Vehicle</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Delete Booking</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

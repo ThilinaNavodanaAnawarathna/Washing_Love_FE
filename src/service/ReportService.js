@@ -10,5 +10,11 @@ class VehicleService {
     const req = axios.get(url, { headers: authHeader(),params:{"userId":id} });
     return handleResponseWithLoginCheck(req);
   }
+
+  getAllReports() {
+    const url = API_URL_MAIN + "/all";
+    const req = axios.get(url, { headers: authHeader() });
+    return handleResponseWithLoginCheck(req);
+  }
 }
 export default new VehicleService();

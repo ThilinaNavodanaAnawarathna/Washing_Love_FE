@@ -51,26 +51,27 @@ onMounted(() => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="item in bookingDataList"
+                    :key="item">
                   <td class="py-3">
-                    <span class="text-xs">1</span>
+                    <span class="text-xs">{{ item.id }}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">Thilina@mail.com</span>
+                    <span class="text-xs">{{ item.user.firstName }} {{ item.user.lastName }}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">22/12/2023</span>
+                    <span class="text-xs">{{ item.date }}</span>
                   </td>
                   <td class="text-center py-3">
-                    <span class="text-xs">9:00 AM</span>
-                  </td>
-
-                  <td class="text-center py-3">
-                    <span class="cursor-pointer text-xs ql-color-green">Pending</span>
+                    <span class="text-xs">{{ item.startTime }}</span>
                   </td>
 
                   <td class="text-center py-3">
-                    <a href="javascript:;" class="text-dark text-danger">BFB 2354</a>
+                    <span class="cursor-pointer text-xs ql-color-green">{{ item.bookingStatus }}</span>
+                  </td>
+
+                  <td class="text-center py-3">
+                    <a href="javascript:;" class="text-dark text-danger">{{ item.vehicle.vehicleNumber }}</a>
                   </td>
                 </tr>
 
@@ -83,3 +84,51 @@ onMounted(() => {
     </section>
   </div>
 </template>
+<script>
+import BookingService from "@/service/BookingService";
+import Vehicle from "@/model/Vehicle";
+import Booking from "@/model/Booking";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      bookingData: new Booking(),
+      formData: new Vehicle(),
+      loading: false,
+      submitted: false,
+      errorMessage: "",
+      message: "",
+      bookingDataList: [],
+      selectedBookingId: 0
+    };
+  },
+  mounted() {
+    this.loadBooking();
+  },
+  methods: {
+    loadBooking() {
+      BookingService.getAllBookings().then((response) => {
+        response.data.forEach((element, index) => {
+          const payload = {
+            id: element.id,
+            vehicle: element.vehicle,
+            user: element.user,
+            date: element.date,
+            startTime: element.startTime,
+            endTime: element.endTime,
+            bookingStatus: element.bookingStatus
+          };
+          this.bookingDataList.push(payload);
+        });
+        console.log(this.bookingDataList);
+      }).catch((err) => {
+        console.log(err);
+      }).then(() => {
+        this.loading = false;
+      });
+    },
+
+  }
+};
+</script>

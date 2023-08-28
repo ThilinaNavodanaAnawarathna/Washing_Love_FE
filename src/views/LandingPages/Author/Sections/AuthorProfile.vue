@@ -36,44 +36,99 @@ onMounted(() => {
                 <div class="card z-index-0 fadeIn3 fadeInBottom">
 
                   <div class="card-body">
-                    <h6 class="text-center">Update Profile Details</h6>
+                    <h6 class="text-center">Profile Details</h6>
                     <form role="form" class="text-start">
-                      <MaterialInput
-                        id="UserName"
-                        class="input-group-outline my-3"
-                        :label="{ text: 'First Name', class: 'form-label' }"
-                        type="text"
-                      />
-                      <MaterialInput
-                        id="email"
-                        class="input-group-outline my-3"
-                        :label="{ text: 'Last Name', class: 'form-label' }"
-                        type="text"
-                      />
-                      <MaterialInput
-                        id="password"
-                        class="input-group-outline mb-3"
-                        :label="{ text: 'Email', class: 'form-label' }"
-                        type="email"
-                      />
-                      <MaterialInput
-                        id="password"
-                        class="input-group-outline mb-3"
-                        :label="{ text: 'Password', class: 'form-label' }"
-                        type="password"
-                      />
+                      <div class=" text-white form-group">
+                        <label for="username">First Name</label>
+                        <input
+                          v-model="formData.firstName"
+                          type="text"
+                          id="firstName"
+                          class="form-control"
+                          name="firstName"
+                          placeholder="First Name"
+                          disabled="true"
+                          required>
+                        <div class="text-white invalid-feedback">
+                          First Name is required.
+                        </div>
+                      </div>
+
+                      <div class=" text-white form-group">
+                        <label for="lastName">Last Name</label>
+                        <input
+                          v-model="formData.lastName"
+                          type="text"
+                          id="lastName"
+                          class="form-control"
+                          name="lastName"
+                          placeholder="Last Name"
+                          disabled="true"
+                          required>
+                        <div class="text-white invalid-feedback">
+                          Last Name is required.
+                        </div>
+                      </div>
+
+                      <div class=" text-white form-group">
+                        <label for="email">Email</label>
+                        <input
+                          v-model="formData.email"
+                          type="email"
+                          id="email"
+                          class="form-control"
+                          name="email"
+                          placeholder="Email"
+                          disabled="true"
+                          required>
+                        <div class="text-white invalid-feedback">
+                          Email is required.
+                        </div>
+                      </div>
+
+                      <div class=" text-white form-group">
+                        <label for="password">Create Date</label>
+                        <input
+                          v-model="formData.createTime"
+                          type="text"
+                          id="email"
+                          class="form-control"
+                          name="password"
+                          placeholder="Password"
+                          disabled="true"
+                          required>
+                        <div class="text-white invalid-feedback">
+                          Password is required.
+                        </div>
+                      </div>
+
+                      <div class=" text-white form-group">
+                        <label for="password">Role</label>
+                        <input
+                          v-model="formData.role"
+                          type="text"
+                          id="email"
+                          class="form-control"
+                          name="password"
+                          placeholder="Password"
+                          disabled="true"
+                          required>
+                        <div class="text-white invalid-feedback">
+                          Password is required.
+                        </div>
+                      </div>
 
                       <div class="text-center">
-                        <router-link to="/pages/landing-pages/basic">
-                          <MaterialButton
-                            class="my-4 mb-2"
-                            variant="gradient"
-                            color="success"
-                            fullWidth
+<!--                        <router-link to="/pages/landing-pages/basic">-->
+<!--                          <MaterialButton-->
+<!--                            class="my-4 mb-2"-->
+<!--                            variant="gradient"-->
+<!--                            color="success"-->
+<!--                            fullWidth-->
 
-                          >Update Details</MaterialButton
-                          >
-                        </router-link>
+<!--                          >Update Details</MaterialButton-->
+<!--                          >-->
+<!--                        </router-link>-->
                       </div>
                     </form>
                   </div>
@@ -85,3 +140,34 @@ onMounted(() => {
     </div>
   </section>
 </template>
+<script>
+
+import User from "@/model/User";
+import UserService from "@/service/UserService";
+export default {
+  name: "Login",
+  data() {
+    return {
+      formData: new User(),
+      loading: false,
+      submitted: false,
+      errorMessage: "",
+      message: "",
+    };
+  },
+  mounted() {
+    this.getUserDetails()
+  },
+  methods: {
+    getUserDetails(){
+      UserService.getByUserId(localStorage.getItem("user-id")).then((response) => {
+        this.formData=response.data
+      }).catch((err) => {
+        console.log(err);
+      }).then(() => {
+        this.loading = false;
+      });
+    }
+  }
+}
+</script>

@@ -22,8 +22,8 @@ onMounted(() => {
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12 text-center">
-            <h2 class="text-gradient text-primary text-center">All Bookings</h2>
-            <p class="lead mb-5">All Bookings Manage</p>
+            <h2 class="text-gradient text-primary text-center">All Spare Parts</h2>
+            <p class="lead mb-5">All Spare Parts Manage</p>
           </div>
           <div class="col-lg-10">
             <div class="table-responsive">

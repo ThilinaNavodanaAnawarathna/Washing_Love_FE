@@ -18,9 +18,7 @@ import ReportCardBackground from "@/assets/img/Report.png";
               & View Your Previous</h1>
 
             <p class="lead  opacity-8 text-md">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste exercitationem odit consectetur magni dolore
-              nulla impedit sed maxime modi voluptatum ratione, labore et quod harum. Dolorem voluptatum obcaecati
-              ducimus in!
+              Join us in simplifying the vehicle wash booking process and propelling your wash center into the digital age. Embrace convenience, efficiency, and a new era of customer engagement with our Vehicle Wash Center Online Booking System
             </p>
             <h1 class="text-bolder"> +94 25645120 </h1>
             <a

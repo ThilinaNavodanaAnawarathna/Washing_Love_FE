@@ -15,15 +15,15 @@ import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
             <h4 class="text-white">Carry Yourself Brand New Everyday</h4>
             <h1 class="text-white">More Than Just a Car Wash</h1>
             <p class="lead text-white opacity-8 text-md">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste exercitationem odit consectetur magni dolore nulla impedit sed maxime modi voluptatum ratione, labore et quod harum. Dolorem voluptatum obcaecati ducimus in!
+              Join us in simplifying the vehicle wash booking process and propelling your wash center into the digital age. Embrace convenience, efficiency, and a new era of customer engagement with our Vehicle Wash Center Online Booking System
             </p>
-            <a
-              href="https://www.creative-tim.com/learning-lab/vue/overview/material-kit/"
-              class="text-white icon-move-right"
-            >
+<!--            <a-->
+<!--              href="https://www.creative-tim.com/learning-lab/vue/overview/material-kit/"-->
+<!--              class="text-white icon-move-right"-->
+<!--            >-->
               Read docs
               <i class="fas fa-arrow-right text-sm ms-1"></i>
-            </a>
+<!--            </a>-->
           </div>
           <div class="col-lg-5 ">
             <router-link to="/views/Presentation/mybookings">
